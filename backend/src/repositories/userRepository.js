@@ -2,7 +2,7 @@ const { User } = require("../../entities/user");
 const mongoose = require("mongoose");
 
 module.exports = class UserRepository {
-  constructor() {}
+  constructor() { }
 
   async find(email, password) {
     return await User.findOne({ email: email, password: password });
@@ -10,6 +10,10 @@ module.exports = class UserRepository {
 
   async findByEmail(email) {
     return await User.findOne({ email: email });
+  }
+
+  async findById(id) {
+    return await User.findById(id);
   }
 
   async create(user) {
@@ -30,6 +34,10 @@ module.exports = class UserRepository {
   async verifyToken(userId, token) {
     const foundUser = await User.findOne({ _id: userId });
     return foundUser.userToken == token;
+  }
+
+  async findByIdAndUpdate(id, updateData) {
+    return await User.findByIdAndUpdate(id, updateData, { new: true });
   }
 
 };

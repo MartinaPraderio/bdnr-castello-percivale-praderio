@@ -20,6 +20,12 @@ const userSchema = new Schema({
       "Password must contain at least 6 characters with at least one letter and one number",
     ],
   },
+  profileImage: { type: String },
+  bio: { type: String },
+  friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  wishlist: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+  library: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+
   userToken: {
     type: String,
     unique: true,

@@ -84,6 +84,25 @@ module.exports = class UserController {
     }
   }
 
+  async getUserProfile(req, res) {
+    try {
+      console.log(req.params.id)
+      const user = await this.userService.getUserProfile(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      res.json(user);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
 
-  
+  async updateUserProfile(req, res) {
+    try {
+      const updatedUser = await this.userService.updateUserProfile(req.params.id, req.body);
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
 };

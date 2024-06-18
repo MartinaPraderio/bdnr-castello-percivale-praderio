@@ -37,5 +37,29 @@ module.exports = class UserService {
     else return tokenExists;
   }
 
+  async getUserProfile(userId) {
+    try {
+      const user = await this.userRepository.findById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  async updateUserProfile(userId, updateData) {
+    try {
+      const updatedUser = await this.userRepository.findByIdAndUpdate(userId, updateData, { new: true });
+      if (!updatedUser) {
+        throw new Error('User not found');
+      }
+      return updatedUser;
+    } catch (err) {
+      throw err;
+    }
+  };
+
 
 };
