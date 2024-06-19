@@ -40,4 +40,19 @@ module.exports = class UserRepository {
     return await User.findByIdAndUpdate(id, updateData, { new: true });
   }
 
+  async addAttributeToUser(userId, attribute, value) {
+    try {
+      const foundUser = await User.findById(userId);
+      if (!foundUser) {
+        throw new Error('User not found');
+      }
+      foundUser.set(attribute, value);
+  
+      await foundUser.save();
+      return foundUser;
+    } catch (error) {
+      throw new Error(`Error adding attribute to user: ${error.message}`);
+    }
+  }
+
 };

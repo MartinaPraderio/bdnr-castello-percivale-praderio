@@ -105,4 +105,13 @@ module.exports = class UserController {
       res.status(500).json({ message: err.message });
     }
   };
+
+  async addAttributeToUser(req, res) {
+    try {
+      const updatedUser = await this.userService.addAttributeToUser(req.params.id, req.body.attribute, req.body.value);
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
 };

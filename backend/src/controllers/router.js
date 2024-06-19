@@ -12,6 +12,6 @@ router.post("/signin", (req, res) => users.signin(req, res));
 router.delete("/signout", (req, res) => users.signout(req, res));
 router.get("/users/:id", (req, res) => users.getUserProfile(req, res));
 router.put("/users/:id", (req, res) => users.updateUserProfile(req, res));
-
+router.put("/users/:id/addAttribute", (req, res) => users.addAttributeToUser(req, res));
 
 module.exports = router;

@@ -61,5 +61,14 @@ module.exports = class UserService {
     }
   };
 
+  async addAttributeToUser(userId, attribute, value) {
+    try {
+      const updatedUser = await this.userRepository.addAttributeToUser(userId, attribute, value);
+      return updatedUser;
+    } catch (err) {
+      throw err;
+    }
+  }
+
 
 };
