@@ -66,7 +66,6 @@ module.exports = class UserController {
   async signout(req, res) {
     try {
       const { userId } = req.query;
-      console.log(userId);
       const token = req.header("Authorization");
 
       const authInfo = this.authService.verifyToken(token);
@@ -86,7 +85,6 @@ module.exports = class UserController {
 
   async getUserProfile(req, res) {
     try {
-      console.log(req.params.id)
       const user = await this.userService.getUserProfile(req.params.id);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -108,7 +106,8 @@ module.exports = class UserController {
 
   async addAttributeToUser(req, res) {
     try {
-      const updatedUser = await this.userService.addAttributeToUser(req.params.id, req.body.attribute, req.body.value);
+      const { attribute, value } = req.body;
+      const updatedUser = await this.userService.addAttributeToUser(req.params.id, attribute, value);
       res.json(updatedUser);
     } catch (err) {
       res.status(500).json({ message: err.message });

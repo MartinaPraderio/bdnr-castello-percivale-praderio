@@ -33,13 +33,12 @@ const userSchema = new Schema({
   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   wishlist: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
   library: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
-  additionalAttributes: { type: Mixed, default: {} },
   userToken: {
     type: String,
     unique: true,
     sparse: true,
   },
-});
+},  { strict: false });
 
 const User = mongoose.model("User", userSchema);
 module.exports = { User };
