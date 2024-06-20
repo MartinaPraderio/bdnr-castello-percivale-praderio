@@ -47,10 +47,18 @@ module.exports = class UserController {
       }
       user = await this.userService.signin(email, password);
       const token = await this.authService.generateToken({
+        userId: user._id,
         email: email,
       });
 
       await this.userService.addUserToToken(user, token);
+
+      res.cookie('authToken', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 3600000, // 1 hora
+        sameSite: 'strict'
+      });
 
       res.header("Authorization", token);
       authorizationLogger.log({
@@ -89,7 +97,39 @@ module.exports = class UserController {
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      res.json(user);
+
+      let response = {
+        _id: user._id,
+        name: user.name,
+        bio: user.bio,
+        badges: user.badges,
+        inventory: user.inventory,
+        captures: user.captures,
+        videos: user.videos,
+        articles: user.articles,
+        reviews: user.reviews,
+        guides: user.guides,
+        artwork: user.artwork,
+        friends: user.friends,
+        wishlist: user.wishlist,
+        library: user.library,
+      };
+
+      if (user.privacySettings.showEmail) {
+        response.email = user.email;
+      }
+
+      if (user.privacySettings.showProfileImage) {
+        response.profileImage = user.profileImage;
+      }
+
+      if (user.privacySettings.showWishlist) {
+        response.wishlist = user.wishlist;
+      } else {
+        response.wishlist = [];
+      }
+
+      res.json(response);
     } catch (err) {
       res.status(500).json({ message: err.message });
     }

@@ -33,12 +33,18 @@ const userSchema = new Schema({
   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   wishlist: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
   library: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
+  privacySettings: {
+    visibility: { type: String, enum: ['public', 'friends', 'private'], default: 'public' },
+    showEmail: { type: Boolean, default: false },
+    showProfileImage: { type: Boolean, default: true },
+    showWishlist: { type: Boolean, default: true }
+  },
   userToken: {
     type: String,
     unique: true,
     sparse: true,
   },
-},  { strict: false });
+}, { strict: false });
 
 const User = mongoose.model("User", userSchema);
 module.exports = { User };

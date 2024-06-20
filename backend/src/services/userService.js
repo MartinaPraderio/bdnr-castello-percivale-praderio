@@ -49,17 +49,24 @@ module.exports = class UserService {
     }
   };
 
-  async updateUserProfile(userId, updateData) {
+  async updateUserProfile(userId, userData) {
     try {
-      const updatedUser = await this.userRepository.findByIdAndUpdate(userId, updateData, { new: true });
-      if (!updatedUser) {
+      const user = await User.findById(userId);
+      if (!user) {
         throw new Error('User not found');
       }
-      return updatedUser;
+
+      if (userData.privacySettings) {
+        user.privacySettings = Object.assign(user.privacySettings, userData.privacySettings);
+      }
+      Object.assign(user, userData);
+
+      await user.save();
+      return user;
     } catch (err) {
       throw err;
     }
-  };
+  }
 
   async addAttributeToUser(userId, attribute, value) {
     try {
