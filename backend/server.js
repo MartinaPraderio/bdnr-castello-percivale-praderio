@@ -7,8 +7,11 @@ const { User } = require("./entities/user");
 const UserRepository = require("./src/repositories/userRepository");
 const cors = require("cors");
 require("dotenv").config();
+const redisClient = require('./config/redisClient');
+const cookieParser = require('cookie-parser');
 
 const app = express();
+
 
 app.use(
   cors({
@@ -16,8 +19,11 @@ app.use(
   })
 );
 
+redisClient.connect().catch(console.error);
 app.use(express.json());
+app.use(cookieParser());
 app.use(authRouter);
+
 
 app.get("/health", async (req, res) => {
   try {
@@ -66,7 +72,7 @@ try {
   // let connectionString = process.env.MONGO_CONNECTION_STRING; 
   let connectionString = 'mongodb://localhost:27017/Users';
   mongoose.connect(connectionString, { connectTimeoutMS: 30000 }).then(() => console.log('MongoDB connected'))
-  .catch((err) => console.error('MongoDB connection error:', err));
+    .catch((err) => console.error('MongoDB connection error:', err));
   console.log("Database connected");
   createDefaultAdmin();
 } catch (err) {

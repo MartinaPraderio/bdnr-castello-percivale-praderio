@@ -47,10 +47,19 @@ module.exports = class UserController {
       }
       user = await this.userService.signin(email, password);
       const token = await this.authService.generateToken({
+        userId: user._id,
         email: email,
       });
 
       await this.userService.addUserToToken(user, token);
+
+      // Configurar la cookie con el token
+      res.cookie('authToken', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 3600000, // 1 hora
+        sameSite: 'strict'
+      });
 
       res.header("Authorization", token);
       authorizationLogger.log({
