@@ -20,7 +20,7 @@ module.exports = class AuthController {
       if (payload) {
         console.log("payload", payload)
         req.userData = { userId: payload.userId, email: payload.email };
-        next();  // Llama a next() para continuar con la siguiente función de middleware
+        next();
       } else {
         const data = { message: "Unauthorized" };
         errorLogger.log(data);

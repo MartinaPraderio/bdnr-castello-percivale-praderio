@@ -53,7 +53,6 @@ module.exports = class UserController {
 
       await this.userService.addUserToToken(user, token);
 
-      // Configurar la cookie con el token
       res.cookie('authToken', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
