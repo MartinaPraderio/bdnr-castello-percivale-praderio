@@ -3,13 +3,14 @@ const AuthController = require("./authController");
 const UserController = require("./userController");
 const PermissionMiddleware = require('../middleware/permissionMiddleware');
 const PermissionController = require('./permissionController');
-
+const GameController = require("./gameController");
 
 const router = new Router();
 const auth = new AuthController();
 const users = new UserController();
 const permissionController = new PermissionController();
 const permissionMiddleware = new PermissionMiddleware();
+const games = new GameController();
 
 
 
@@ -27,5 +28,12 @@ router.get('/permissions/:userId', (req, res) => permissionController.listPermis
 router.get("/users/:id", (req, res, next) => auth.verifyToken(req, res, next), permissionMiddleware.checkPermission('canView'), (req, res) => users.getUserProfile(req, res));
 router.put("/users/:id", (req, res, next) => auth.verifyToken(req, res, next), permissionMiddleware.checkPermission('canEdit'), (req, res) => users.updateUserProfile(req, res));
 router.put("/users/:id/addAttribute", (req, res, next) => auth.verifyToken(req, res, next), permissionMiddleware.checkPermission('canEdit'), (req, res) => users.addAttributeToUser(req, res));
+
+
+router.post("/games", (req, res, next) => auth.verifyToken(req, res, next), (req, res) => games.createGame(req, res));
+router.get("/games/:id", (req, res, next) => auth.verifyToken(req, res, next), (req, res) => games.getGame(req, res));
+router.get("/games", (req, res, next) => auth.verifyToken(req, res, next), (req, res) => games.getAllGames(req, res));
+router.put("/games/:id", (req, res, next) => auth.verifyToken(req, res, next), (req, res) => games.updateGame(req, res));
+router.delete("/games/:id", (req, res, next) => auth.verifyToken(req, res, next), (req, res) => games.deleteGame(req, res));
 
 module.exports = router;
