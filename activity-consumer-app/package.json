@@ -1,0 +1,20 @@
+{
+  "name": "activity-consumer-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/node": "^20.14.7",
+    "activity-tracking-sdk": "^1.2.2",
+    "dotenv": "^16.4.5",
+    "p-limit": "^5.0.0",
+    "typescript": "^5.5.2"
+  }
+}
