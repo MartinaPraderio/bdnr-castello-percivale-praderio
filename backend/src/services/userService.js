@@ -37,5 +37,45 @@ module.exports = class UserService {
     else return tokenExists;
   }
 
+  async getUserProfile(userId) {
+    try {
+      const user = await this.userRepository.findById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  async updateUserProfile(userId, userData) {
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      if (userData.privacySettings) {
+        user.privacySettings = Object.assign(user.privacySettings, userData.privacySettings);
+      }
+      Object.assign(user, userData);
+
+      await user.save();
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async addAttributeToUser(userId, attribute, value) {
+    try {
+      const updatedUser = await this.userRepository.addAttributeToUser(userId, attribute, value);
+      return updatedUser;
+    } catch (err) {
+      throw err;
+    }
+  }
+
 
 };

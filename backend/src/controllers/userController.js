@@ -47,10 +47,18 @@ module.exports = class UserController {
       }
       user = await this.userService.signin(email, password);
       const token = await this.authService.generateToken({
+        userId: user._id,
         email: email,
       });
 
       await this.userService.addUserToToken(user, token);
+
+      res.cookie('authToken', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 3600000, // 1 hora
+        sameSite: 'strict'
+      });
 
       res.header("Authorization", token);
       authorizationLogger.log({
@@ -66,7 +74,6 @@ module.exports = class UserController {
   async signout(req, res) {
     try {
       const { userId } = req.query;
-      console.log(userId);
       const token = req.header("Authorization");
 
       const authInfo = this.authService.verifyToken(token);
@@ -84,6 +91,66 @@ module.exports = class UserController {
     }
   }
 
+  async getUserProfile(req, res) {
+    try {
+      const user = await this.userService.getUserProfile(req.params.id);
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
 
-  
+      let response = {
+        _id: user._id,
+        name: user.name,
+        bio: user.bio,
+        badges: user.badges,
+        inventory: user.inventory,
+        captures: user.captures,
+        videos: user.videos,
+        articles: user.articles,
+        reviews: user.reviews,
+        guides: user.guides,
+        artwork: user.artwork,
+        friends: user.friends,
+        wishlist: user.wishlist,
+        library: user.library,
+      };
+
+      if (user.privacySettings.showEmail) {
+        response.email = user.email;
+      }
+
+      if (user.privacySettings.showProfileImage) {
+        response.profileImage = user.profileImage;
+      }
+
+      if (user.privacySettings.showWishlist) {
+        response.wishlist = user.wishlist;
+      } else {
+        response.wishlist = [];
+      }
+
+      res.json(response);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+
+  async updateUserProfile(req, res) {
+    try {
+      const updatedUser = await this.userService.updateUserProfile(req.params.id, req.body);
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  };
+
+  async addAttributeToUser(req, res) {
+    try {
+      const { attribute, value } = req.body;
+      const updatedUser = await this.userService.addAttributeToUser(req.params.id, attribute, value);
+      res.json(updatedUser);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
 };
