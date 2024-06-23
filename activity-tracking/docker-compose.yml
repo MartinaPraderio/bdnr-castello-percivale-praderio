@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  backend:
+    build: .
+    ports:
+      - '3000:3000'
+    depends_on:
+      cassandra:
+        condition: service_healthy
+    environment:
+      CONTACT_POINT: cassandra
+      LOCAL_DATA_CENTER: datacenter1
+      KEY_SPACES: activity_tracking
+    volumes:
+      - .:/usr/src/app
+    command: npm run start:dev
+
+  cassandra:
+    image: cassandra:latest
+    ports:
+      - '9042:9042'
+    volumes:
+      - ./init.cql:/docker-entrypoint-initdb.d/init.cql
+    environment:
+      - CASSANDRA_CLUSTER_NAME=MyCluster
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_HINTED_HANDOFF_ENABLED=true
+      - CASSANDRA_NUM_TOKENS=256
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=256M
+    healthcheck:
+      test: ['CMD-SHELL', "cqlsh -e 'describe keyspaces'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
