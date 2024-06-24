@@ -74,11 +74,12 @@ module.exports = class UserController {
   async signout(req, res) {
     try {
       const { userId } = req.query;
-      const token = req.header("Authorization");
 
-      const authInfo = this.authService.verifyToken(token);
-      if (!authInfo) throw new Error("Invalid token");
-      await this.userService.verifyUserToken(userId, token);
+      res.clearCookie('authToken', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict'
+      });
 
       const user = await this.userService.signOut(userId);
       authorizationLogger.log({
@@ -102,8 +103,6 @@ module.exports = class UserController {
         _id: user._id,
         name: user.name,
         bio: user.bio,
-        badges: user.badges,
-        inventory: user.inventory,
         captures: user.captures,
         videos: user.videos,
         articles: user.articles,

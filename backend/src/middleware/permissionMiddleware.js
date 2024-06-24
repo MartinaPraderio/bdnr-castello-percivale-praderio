@@ -11,9 +11,9 @@ module.exports = class PermissionMiddleware {
         return async (req, res, next) => {
             const userId = req.userData.userId;
             const profileToVisitId = req.params.id;
-
+            const userPermissions = await this.permissionService.getPermission(userId);
             try {
-                if (userId === profileToVisitId) {
+                if (userPermissions && userPermissions[action] && userId === profileToVisitId) {
                     return next();
                 }
 
@@ -22,11 +22,11 @@ module.exports = class PermissionMiddleware {
                     return res.status(404).json({ message: 'User not found' });
                 }
 
-                if (profileToVisit.privacySettings.visibility === 'public') {
+                if (profileToVisit.privacySettings.visibility === 'public' && userPermissions && userPermissions[action]) {
                     return next();
                 }
                 const isFriend = profileToVisit.friends.includes(userId);
-                if (isFriend) {
+                if (isFriend && userPermissions && userPermissions[action]) {
                     if (action === 'canView') {
                         return next();
                     }

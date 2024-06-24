@@ -17,7 +17,7 @@ const games = new GameController();
 router.get("/verifyToken", (req, res) => auth.verifyToken(req, res));
 router.post("/signup", (req, res) => users.signup(req, res));
 router.post("/signin", (req, res) => users.signin(req, res));
-router.delete("/signout", (req, res) => users.signout(req, res));
+router.delete("/signout", (req, res, next) => auth.verifyToken(req, res, next), (req, res) => users.signout(req, res));
 
 // Rutas para gestionar permisos
 router.post('/permissions', (req, res) => permissionController.createPermission(req, res));
