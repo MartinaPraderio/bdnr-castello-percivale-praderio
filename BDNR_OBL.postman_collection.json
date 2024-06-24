@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "6e11fa93-00dc-474d-9133-ff55161e98ae",
+		"name": "BDNR_OBL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "14749275",
+		"_collection_link": "https://lunar-station-136480.postman.co/workspace/My-Workspace~ed0f3b54-c810-4f21-81be-1617d7ae8cae/collection/14749275-6e11fa93-00dc-474d-9133-ff55161e98ae?action=share&source=collection_link&creator=14749275"
+	},
+	"item": [
+		{
+			"name": "Activity Tracking",
+			"item": [
+				{
+					"name": "activity",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "apiKey123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user_id\": \"1\",\n  \"game_id\": \"L4D\",\n  \"achievements\": [\"Serial Killer\"],\n  \"levels_unlocked\": [\"A New Begining\", \"Keep Fighting\", \"Days Gone\"],\n  \"play_time\": 234,\n  \"created_at\": \"2024-06-17T10:00:00Z\",\n  \"extra_data\": {\n    \"mode\": \"multiplayer\",\n    \"version\": \"2.3.1\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/activity"
+					},
+					"response": []
+				},
+				{
+					"name": "activity",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "apiKey123",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/activity?user=1&game=L4D",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"activity"
+							],
+							"query": [
+								{
+									"key": "user",
+									"value": "1"
+								},
+								{
+									"key": "game",
+									"value": "L4D"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userParams\": {\n    \"name\": \"exampleUser\",\n    \"email\": \"exampleUser@example.com\",\n    \"password\": \"password123\",\n    \"profileImage\": \"https://example.com/profile.jpg\",\n    \"bio\": \"example bio\",\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "Signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"exampleUser\",\n    \"email\": \"example@example.com\",\n    \"password\": \"password123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/signin"
+					},
+					"response": []
+				},
+				{
+					"name": "Signout",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userParams\": {\n        \"name\": \"Juan\",\n        \"email\": \"juan@example.com\",\n        \"password\": \"juan123\",\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/signout?userId=651cced94a29946be6b271da",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"signout"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "651cced94a29946be6b271da"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User profile",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:8080/users/6671a78fe2fdba12e5f3aefc"
+					},
+					"response": []
+				},
+				{
+					"name": "Update user profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"privacySettings\": {\n            \"visibility\": \"public\",\n            \"showEmail\": true,\n            \"showProfileImage\": true,\n            \"showWishlist\": true\n        },\n        \"badges\": [],\n        \"inventory\": [],\n        \"captures\": [],\n        \"videos\": [],\n        \"articles\": [],\n        \"reviews\": [],\n        \"guides\": [],\n        \"artwork\": [],\n        \"_id\": \"6671acd6381ae9541eee1e78\",\n        \"email\": \"example@example.com\",\n        \"name\": \"exampleUser\",\n        \"password\": \"password123\",\n        \"profileImage\": \"https://example.com/profile.jpg\",\n        \"bio\": \"This is an example bio.\",\n        \"friends\": [\"6671a78fe2fdba12e5f3aefc\"],\n        \"wishlist\": [],\n        \"library\": [\"6675e06d60f9c210b650500f\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/users/6671acd6381ae9541eee1e78"
+					},
+					"response": []
+				},
+				{
+					"name": "Add attribute",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"attribute\": \"favortiteGame\",\n  \"value\": \"call of duty\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/users/6671acd6381ae9541eee1e78/addAttribute"
+					},
+					"response": []
+				},
+				{
+					"name": "Create game",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Game Title\",\n  \"description\": \"Game Description\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/games"
+					},
+					"response": []
+				},
+				{
+					"name": "Get game",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/games/6675e06d60f9c210b650500f"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all games",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/games"
+					},
+					"response": []
+				},
+				{
+					"name": "Update game",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Game Title\",\n  \"description\": \"Updated Game Description\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/games/6675e06d60f9c210b650500f"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Privacity",
+			"item": [
+				{
+					"name": "Get permissons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:8080/permissions/6671a78fe2fdba12e5f3aefc"
+					},
+					"response": []
+				},
+				{
+					"name": "Update permissons",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"canView\": true,\n  \"canEdit\": true,\n  \"canDelete\": true\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/permissions/667382d2fb755e4b050e7279"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete permissons",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:8080/permissions/667378a5f608ad2aab66c9ec"
+					},
+					"response": []
+				},
+				{
+					"name": "Create permissons",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"6671acd6381ae9541eee1e78\",      // Reemplaza con el ID del usuario que creaste\n  \"canView\": true,\n  \"canEdit\": true,\n  \"canDelete\": false\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:8080/permissions"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
