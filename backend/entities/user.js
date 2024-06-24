@@ -22,8 +22,6 @@ const userSchema = new Schema({
   },
   profileImage: { type: String },
   bio: { type: String },
-  badges: [{ type: String }],
-  inventory: [{ type: Schema.Types.ObjectId, ref: 'Game' }],
   captures: [{ type: String }],
   videos: [{ type: String }],
   articles: [{ type: String }],
